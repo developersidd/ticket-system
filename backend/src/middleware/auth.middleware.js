@@ -19,7 +19,7 @@ const verifyToken = asyncHandler(async (req, _, next) => {
         id: decodedToken.id,
       },
     });
-    console.log("user:", user)
+    console.log("user:", user);
 
     if (!user) {
       throw new ApiError(401, "Invalid Access Token");
@@ -42,4 +42,6 @@ const authorizeRoles = (...roles) => {
   };
 };
 
-export { verifyToken };
+
+
+export { verifyToken, authorizeRoles };

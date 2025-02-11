@@ -7,7 +7,7 @@ export interface IUser {
   role: string;
   token: string;
   id: number;
-  avartarUrl: string;
+  avatarUrl: string;
 }
 
 export interface IUserContext {

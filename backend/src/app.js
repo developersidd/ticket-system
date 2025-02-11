@@ -3,6 +3,7 @@ import cors from "cors";
 import "dotenv/config";
 import express from "express";
 import authRouter from "./routes/auth.route.js";
+import ticketRouter from "./routes/ticket.route.js";
 import userRouter from "./routes/user.route.js";
 import ApiError from "./utils/ApiError.js";
 const app = express();
@@ -19,6 +20,7 @@ app.get("/", (req, res) => {
 });
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/tickets", ticketRouter);
 // 404 Error Handler
 app.use((req, _, next) => {
   const error = new ApiError(404, "Page Not Found");

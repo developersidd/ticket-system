@@ -13,7 +13,8 @@ model User {
   email     String   @unique
   password  String
   role      Role     @default(USER)
-  tickets   Ticket[]
+  tickets   Ticket[] 
+  avatarUrl String    @default("https://avatar.iran.liara.run/public/boy?username=Ash")
   createdAt DateTime @default(now())
 }
 
@@ -22,6 +23,7 @@ model Ticket {
   title       String
   description String
   status      Status   @default(OPEN)
+  adminResponse String? 
   createdBy   User     @relation(fields: [userId], references: [id]) 
   userId      Int
   createdAt   DateTime @default(now())

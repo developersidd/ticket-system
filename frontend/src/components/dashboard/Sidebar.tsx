@@ -1,4 +1,4 @@
-import { ChartPie, LogOut, SquareUserRound, Ticket, Users } from "lucide-react";
+import { ChartPie, LogOut, PlusCircle, SquareUserRound, Ticket, Users } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { IUserContext } from "../../context/user.context";
 import useUserContext from "../../hooks/useUserContext";
@@ -39,6 +39,19 @@ const Sidebar = () => {
             >
               <SquareUserRound />
               <span className="flex-1 ms-3 whitespace-nowrap">Profile</span>
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to={"/dashboard/tickets/add"}
+              className={({ isActive }) =>
+                `${
+                  isActive ? "bg-teal-500 font-bold text-white" : ""
+                } flex items-center p-2 text-gray-900 rounded-lg hover:text-white hover:bg-teal-500`
+              }
+            >
+              <PlusCircle />
+              <span className="flex-1 ms-3 whitespace-nowrap">Add Ticket</span>
             </NavLink>
           </li>
           {isAdmin && (

@@ -4,7 +4,7 @@ import useUserContext from "../../hooks/useUserContext";
 
 const Navbar = () => {
   const { state } = useUserContext() as IUserContext;
-  const { username, avartarUrl } = state || {};
+  const { username, avatarUrl  } = state || {};
   return (
     <nav className="flex items-center w-full h-[80px] bg-white border-b border-gray-200">
       <div className="w-full px-3 py-3 lg:px-5 lg:pl-3">
@@ -27,7 +27,7 @@ const Navbar = () => {
                 <Link to="/dashboard/profile">
                   <img
                     className="size-10 rounded-full"
-                    src={avartarUrl}
+                    src={avatarUrl}
                     alt={username}
                   />
                 </Link>

@@ -42,7 +42,7 @@ const RegisterForm: React.FC = () => {
       const user = res.data;
       navigate("/login");
     } catch (e: any) {
-      console.log("e:", e)
+      console.log("e:", e);
       toast.error("There was an error occurred!");
     }
   };
@@ -61,7 +61,7 @@ const RegisterForm: React.FC = () => {
             id="username"
             name="username"
             data-error={errors?.username}
-            className=" data-[error]:border-red-500 block w-full border border-gray-300 px-4 py-2 text-gray-600 text-sm rounded focus:ring-0 focus:border-green-400 focus:outline-none placeholder-gray-500"
+            className=" data-[error]:border-red-500 block w-full border border-gray-300 px-4 py-2 text-gray-600 text-sm rounded focus:ring-0 focus:border-teal-400 focus:outline-none placeholder-gray-500"
           />
         </FormField>
         <FormField label={"Email"} error={errors?.email}>
@@ -72,7 +72,7 @@ const RegisterForm: React.FC = () => {
             id="email"
             name="email"
             data-error={errors?.email}
-            className=" data-[error]:border-red-500 block w-full border border-gray-300 px-4 py-2 text-gray-600 text-sm rounded focus:ring-0 focus:border-green-400 focus:outline-none placeholder-gray-500"
+            className=" data-[error]:border-red-500 block w-full border border-gray-300 px-4 py-2 text-gray-600 text-sm rounded focus:ring-0 focus:border-teal-400 focus:outline-none placeholder-gray-500"
           />
         </FormField>
         <FormField label={"Password"} error={errors?.password}>
@@ -83,7 +83,7 @@ const RegisterForm: React.FC = () => {
             name="password"
             placeholder="Enter your password"
             data-error={errors?.password}
-            className=" data-[error]:border-red-500 block w-full border border-gray-300 px-4 py-2 text-gray-600 text-sm rounded focus:ring-0 focus:border-green-400 focus:outline-none placeholder-gray-500"
+            className=" data-[error]:border-red-500 block w-full border border-gray-300 px-4 py-2 text-gray-600 text-sm rounded focus:ring-0 focus:border-teal-400 focus:outline-none placeholder-gray-500"
           />
         </FormField>
         <FormField label={"Avatar URL"} error={errors?.avatarUrl}>
@@ -94,7 +94,7 @@ const RegisterForm: React.FC = () => {
             name="avatarUrl"
             placeholder="Enter your avatar URL"
             data-error={errors?.avatarUrl}
-            className=" data-[error]:border-red-500 block w-full border border-gray-300 px-4 py-2 text-gray-600 text-sm rounded focus:ring-0 focus:border-green-400 focus:outline-none placeholder-gray-500"
+            className=" data-[error]:border-red-500 block w-full border border-gray-300 px-4 py-2 text-gray-600 text-sm rounded focus:ring-0 focus:border-teal-400 focus:outline-none placeholder-gray-500"
           />
         </FormField>
         <div className="">
@@ -112,7 +112,7 @@ const RegisterForm: React.FC = () => {
         </span>
         <Link
           to="/login"
-          className="block text-center text-green-400 hover:text-green-500 transition  font-medium "
+          className="block text-center text-teal-400 hover:text-teal-500 transition  font-medium "
         >
           Login
         </Link>
@@ -121,7 +121,7 @@ const RegisterForm: React.FC = () => {
         <button
           disabled={isSubmitting}
           type="submit"
-          className={`cursor-pointer disabled:opacity-70 block w-full py-2 text-center text-white bg-green-400 border border-primary rounded hover:bg-green-500  transition uppercase font-roboto font-medium`}
+          className={`cursor-pointer disabled:opacity-70 block w-full py-2 text-center text-white bg-teal-400 border border-primary rounded hover:bg-teal-500  transition uppercase font-roboto font-medium`}
         >
           Register
         </button>

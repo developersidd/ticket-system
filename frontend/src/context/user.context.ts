@@ -4,16 +4,18 @@ import { UserAction } from "../actions/user.acton";
 export interface IUser {
   username: string;
   email: string;
-  password: string;
   role: string;
   token: string;
   id: number;
+  avartarUrl: string;
+}
+
+export interface IUserContext {
+  state: IUser | null;
+  dispatch: React.Dispatch<UserAction>;
 }
 
 // Context and Provider
-const UserContext = createContext<{
-  state: IUser | null;
-  dispatch: React.Dispatch<UserAction>;
-} | null>(null);
+const UserContext = createContext<IUserContext | null>(null);
 
 export default UserContext;

@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 import { apiClient } from "../../api";
@@ -21,6 +21,7 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 const LoginForm: React.FC = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -36,14 +37,14 @@ const LoginForm: React.FC = () => {
         password,
       });
       const user = data.data;
-      console.log("user:", user)
+      console.log("user:", user);
       toast.success(
         `Welcome back - ${user?.role?.toUpperCase()}: ${user?.username}!`
       );
       localStorage.setItem("loggedIn", "true");
-      //router.push("/dashboard/");
+      navigate("/dashboard/");
     } catch (e: any) {
-      console.log("e:", e)
+      console.log("e:", e);
       toast.error("There was an error occurred!");
     }
   };
@@ -62,7 +63,7 @@ const LoginForm: React.FC = () => {
             id="email"
             name="email"
             data-error={errors?.email}
-            className=" data-[error]:border-red-500 block w-full border border-gray-300 px-4 py-2 text-gray-600 text-sm rounded focus:ring-0 focus:border-green-400 focus:outline-none placeholder-gray-500"
+            className=" data-[error]:border-red-500 block w-full border border-gray-300 px-4 py-2 text-gray-600 text-sm rounded focus:ring-0 focus:border-teal-400 focus:outline-none placeholder-gray-500"
           />
         </FormField>
         <FormField label={"Password"} error={errors?.password}>
@@ -73,7 +74,7 @@ const LoginForm: React.FC = () => {
             name="password"
             placeholder="Enter your password"
             data-error={errors?.password}
-            className=" data-[error]:border-red-500 block w-full border border-gray-300 px-4 py-2 text-gray-600 text-sm rounded focus:ring-0 focus:border-green-400 focus:outline-none placeholder-gray-500"
+            className=" data-[error]:border-red-500 block w-full border border-gray-300 px-4 py-2 text-gray-600 text-sm rounded focus:ring-0 focus:border-teal-400 focus:outline-none placeholder-gray-500"
           />
         </FormField>
         <div className="">
@@ -89,7 +90,7 @@ const LoginForm: React.FC = () => {
         <span className="text-sm text-gray-600"> Don't have an account? </span>
         <Link
           to="/register"
-          className="block text-center text-green-400  font-medium"
+          className="block text-center text-teal-400  font-medium"
         >
           Register
         </Link>
@@ -98,7 +99,7 @@ const LoginForm: React.FC = () => {
         <button
           disabled={isSubmitting}
           type="submit"
-          className={`cursor-pointer disabled:opacity-70 block w-full py-2 text-center text-white bg-green-400 border border-primary rounded hover:bg-green-500  transition uppercase font-roboto font-medium`}
+          className={`cursor-pointer disabled:opacity-70 block w-full py-2 text-center text-white bg-teal-400 border border-primary rounded hover:bg-teal-500  transition uppercase font-roboto font-medium`}
         >
           Login
         </button>

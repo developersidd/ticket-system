@@ -1,11 +1,30 @@
-import { ChartPie, LogOut, PlusCircle, SquareUserRound, Ticket, Users } from "lucide-react";
-import { NavLink } from "react-router-dom";
+import {
+  ChartPie,
+  LogOut,
+  PlusCircle,
+  SquareUserRound,
+  Ticket,
+  Users,
+} from "lucide-react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import { apiClient } from "../../api";
 import { IUserContext } from "../../context/user.context";
 import useUserContext from "../../hooks/useUserContext";
 
 const Sidebar = () => {
   const { state } = useUserContext() as IUserContext;
   const isAdmin = state?.role === "ADMIN";
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    try {
+      await apiClient.post("/auth/logout");
+      navigate("/login");
+      localStorage.removeItem("loggedIn");
+    } catch (err: any) {
+      toast.error("Failed to sign out");
+    }
+  };
   return (
     <aside
       id="logo-sidebar"
@@ -49,6 +68,7 @@ const Sidebar = () => {
                   isActive ? "bg-teal-500 font-bold text-white" : ""
                 } flex items-center p-2 text-gray-900 rounded-lg hover:text-white hover:bg-teal-500`
               }
+              end
             >
               <PlusCircle />
               <span className="flex-1 ms-3 whitespace-nowrap">Add Ticket</span>
@@ -96,6 +116,7 @@ const Sidebar = () => {
                   isActive ? "bg-teal-500 font-bold text-white" : ""
                 } flex items-center p-2 text-gray-900 rounded-lg hover:text-white hover:bg-teal-500`
               }
+              end
             >
               <Ticket />
               <span className="flex-1 ms-3 whitespace-nowrap">My Tickets</span>
@@ -103,7 +124,10 @@ const Sidebar = () => {
           </li>
 
           <li>
-            <button className="cursor-pointer flex w-full items-center p-2 text-gray-900 hover:text-white rounded-lg hover:bg-teal-500">
+            <button
+              onClick={handleLogout}
+              className="cursor-pointer flex w-full items-center p-2 text-gray-900 hover:text-white rounded-lg hover:bg-teal-500"
+            >
               <LogOut />
               <span className="ms-3 whitespace-nowrap">Sign Out</span>
             </button>

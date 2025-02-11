@@ -1,12 +1,13 @@
 import { createContext } from "react";
 import { TicketAction } from "../actions/ticket.acton";
+import { IUser } from "./user.context";
 
 export interface ITicket {
   title: string;
   description: string;
   status: string;
   createdAt: string;
-  createdBy: string;
+  createdBy: IUser;
   adminResponse: string;
   id: number;
 }

@@ -1,11 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect } from "react";
+import React, { use, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { z } from "zod";
 import { apiClient } from "../../api";
+import { IUserContext } from "../../context/user.context";
+import useUserContext from "../../hooks/useUserContext";
 import FormField from "./FormField";
 
 const formSchema = z.object({
@@ -15,6 +17,9 @@ const formSchema = z.object({
   description: z.string().min(20, {
     message: "Description must be at least 20 characters long",
   }),
+  // create optional schema for status and adminResponse
+  status: z.string().optional(),
+  adminResponse: z.string().optional(),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -29,8 +34,11 @@ const AddEditTicketForm: React.FC = () => {
   } = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
+  const { state } = useUserContext() as IUserContext;
+
   const { id } = useParams() || {};
   const isEditing = !!id;
+  const navigate = useNavigate();
   // check if we are editing or adding a ticket
   useEffect(() => {
     const fetchTicket = async () => {
@@ -38,9 +46,12 @@ const AddEditTicketForm: React.FC = () => {
         const {
           data: { data },
         } = await apiClient.get(`/tickets/${id}`);
-        setValue("title", data.title);
-        console.log("data:", data);
-        setValue("description", data.description);
+        const { title, description, status, adminResponse } = data || {};
+        setValue("title", title);
+        setValue("description", description);
+        console.log("status:", status?.toLowerCase());
+        setValue("status", status?.toLowerCase());
+        setValue("adminResponse", adminResponse);
       } catch (e: any) {
         return toast.error("There was an error occurred!");
       }
@@ -49,16 +60,20 @@ const AddEditTicketForm: React.FC = () => {
       fetchTicket();
     }
   }, [id, setValue]);
+
+  // Add or edit ticket
   const onSubmit = async (data: FormData) => {
     try {
       if (isEditing) {
         await apiClient.patch(`/tickets/${id}`, data);
         toast.success("Ticket updated successfully!");
+        navigate("/dashboard/tickets");
         return;
       }
       await apiClient.post("/tickets/create", data);
       toast.success("Ticket created successfully!");
       reset();
+      navigate("/dashboard/tickets");
     } catch (e: any) {
       return toast.error("There was an error occurred!");
     }
@@ -94,6 +109,31 @@ const AddEditTicketForm: React.FC = () => {
         </FormField>
       </div>
 
+      {state?.role === "ADMIN" && (
+        <div className="mt-6 space-y-6">
+          <FormField label={"Status"}>
+            <select
+              {...register("status")}
+              id="status"
+              name="status"
+              className="block w-full border border-gray-300 px-4 py-2 text-gray-600 text-sm rounded focus:ring-0 focus:border-teal-400 focus:outline-none placeholder-gray-500"
+            >
+              <option value="open">Open</option>
+              <option value="in_progress">In Progress</option>
+              <option value="resolved">Resolved</option>
+            </select>
+          </FormField>
+          <FormField label={"Admin Response"}>
+            <textarea
+              {...register("adminResponse")}
+              id="adminResponse"
+              name="adminResponse"
+              placeholder="Enter admin response"
+              className="block w-full border border-gray-300 px-4 py-2 text-gray-600 text-sm rounded focus:ring-0 focus:border-teal-400 focus:outline-none placeholder-gray-500"
+            ></textarea>
+          </FormField>
+        </div>
+      )}
       <div className="mt-4">
         <button
           disabled={isSubmitting}

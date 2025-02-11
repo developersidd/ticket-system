@@ -2,14 +2,14 @@ import { Navigate, Outlet } from "react-router-dom";
 import { IUserContext } from "../context/user.context";
 import useUserContext from "../hooks/useUserContext";
 
-const AdminMiddleware = () => {
+const AdminExecutiveMiddleware = () => {
   const { state } = useUserContext() as IUserContext;
 
-  return state?.email && state.role === "ADMIN" ? (
+  return state?.email && ["ADMIN", "EXECUTIVE"].includes(state.role) ? (
     <Outlet />
   ) : (
     <Navigate to="/dashboard/" />
   );
 };
 
-export default AdminMiddleware;
+export default AdminExecutiveMiddleware;

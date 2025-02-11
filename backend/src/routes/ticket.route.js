@@ -13,9 +13,9 @@ const router = Router();
 
 router.use(verifyToken);
 router.post("/create", createTicket);
-router.get("/", authorizeRoles("ADMIN"), getAllTickets);
+router.get("/all", authorizeRoles("ADMIN", "EXECUTIVE"), getAllTickets);
 router.get("/:id", getTicketById);
-router.get("/user", getUserTickets);
+router.get("/", getUserTickets);
 router.get("/user/:id", getTicketsByUserId);
 router.patch("/:id", updateTicket);
 router.delete("/:id", deleteTicket);

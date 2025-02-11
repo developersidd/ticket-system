@@ -27,6 +27,9 @@ const getTicketById = asyncHandler(async (req, res) => {
     where: {
       id: parseInt(id),
     },
+    include: {
+      createdBy: true,
+    },
   });
   if (!ticket) {
     res.status(404);
@@ -37,15 +40,31 @@ const getTicketById = asyncHandler(async (req, res) => {
 
 // get all tickets
 const getAllTickets = asyncHandler(async (req, res) => {
-  const tickets = await prisma.ticket.findMany();
+  const { status } = req.query;
+  const filterBy = status === "all" ? undefined : status?.toUpperCase();
+  const tickets = await prisma.ticket.findMany({
+    where: {
+      status: filterBy,
+    },
+    include: {
+      createdBy: true,
+    },
+  });
   return res.json(new ApiResponse(200, tickets, "Tickets found"));
 });
 
 // get user tickets
 const getUserTickets = asyncHandler(async (req, res) => {
+  const { status } = req.query;
+  const filterBy = status === "all" ? undefined : status?.toUpperCase();
   const tickets = await prisma.ticket.findMany({
     where: {
-      userId: req?.user?.id,
+      userId: parseInt(req?.user?.id),
+      status: filterBy,
+    },
+
+    include: {
+      createdBy: true,
     },
   });
   return res.json(new ApiResponse(200, tickets, "Tickets found"));
@@ -57,6 +76,9 @@ const getTicketsByUserId = asyncHandler(async (req, res) => {
   const tickets = await prisma.ticket.findMany({
     where: {
       userId: parseInt(id),
+    },
+    include: {
+      createdBy: true,
     },
   });
   return res.json(new ApiResponse(200, tickets, "Tickets found"));
@@ -77,11 +99,11 @@ const updateTicket = asyncHandler(async (req, res) => {
     data: {
       title,
       description,
-      status,
+      status: status?.toUpperCase(),
       adminResponse,
     },
   });
-  console.log("ticket:", ticket)
+  console.log("ticket:", ticket);
   return res.json(new ApiResponse(200, ticket, "Ticket updated"));
 });
 

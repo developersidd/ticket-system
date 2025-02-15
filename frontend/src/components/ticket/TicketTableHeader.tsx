@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 const filters = ["all", "open", "in_progress", "resolved"];
 
 const TicketTableHeader = () => {
-  const [filterBy, setFilterBy] = useState(status || "all");
+  const [searchParams] = useSearchParams();
+  const [filterBy, setFilterBy] = useState(searchParams.get("status") || "all");
 
   return (
     <div className="sm:flex items-center justify-between mb-6">
@@ -11,7 +12,7 @@ const TicketTableHeader = () => {
         {filters.map((item) => (
           <Link
             onClick={() => setFilterBy(item)}
-            to={`/dashboard/tickets?status=${encodeURI(item)}`}
+            to={`/tickets?status=${encodeURI(item)}`}
             key={item}
             className="cursor-pointer rounded-full focus:outline-none"
           >
@@ -26,7 +27,7 @@ const TicketTableHeader = () => {
         ))}
       </div>
       <Link
-        to={"/dashboard/tickets/add"}
+        to={"/tickets/add"}
         className="mt-4 sm:mt-0 inline-flex items-start justify-start px-6 py-3 bg-teal-700 hover:bg-teal-600 focus:outline-none rounded"
       >
         <p className="text-sm font-medium leading-none text-white">Add Task</p>

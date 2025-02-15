@@ -7,7 +7,10 @@ export interface IUser {
   role: string;
   token: string;
   id: number;
-  avatarUrl: string;
+  avatar_url: string;
+  avatart_public_id: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IUserContext {

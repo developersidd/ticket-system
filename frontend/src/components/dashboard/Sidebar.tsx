@@ -14,7 +14,8 @@ import useUserContext from "../../hooks/useUserContext";
 
 const Sidebar = () => {
   const { state } = useUserContext() as IUserContext;
-  const isAdmin = state?.role === "ADMIN";
+  const { username, email, role, avatar_url, id } = state || {};
+  const isAdmin = role === "ADMIN";
   const navigate = useNavigate();
   const handleLogout = async () => {
     try {
@@ -28,14 +29,28 @@ const Sidebar = () => {
   return (
     <aside
       id="logo-sidebar"
-      className=" fixed bottom-0-0 left-0 z-40 w-64 h-[calc(100vh-80px)] pt-10 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0  "
+      className=" fixed bottom-0-0 left-0 z-40 w-64 h-[calc(100vh-80px)] transition-transform -translate-x-full bg-white border-r-2 border-gray-200 sm:translate-x-0  "
       aria-label="Sidebar"
     >
-      <div className="h-full px-3 pb-4 overflow-y-auto bg-white ">
-        <ul className="space-y-3 font-medium">
+      <div className="pt-10 h-full px-3 pb-4 overflow-y-auto bg-white ">
+        {/*  User Details */}
+        <div className="flex items-center gap-3 justify-center mb-6 sha">
+          <div>
+            <img
+              src={avatar_url}
+              alt="logo"
+              className="size-[65px] mx-auto rounded-full"
+            />
+          </div>
+          <div className="">
+            <h1 className="text-lg leading-5  font-bold">{username}</h1>
+            <p className="text-sm text-gray-500 mb-2">{email}</p>
+          </div>
+        </div>
+        <ul className="pt-3 space-y-3 font-medium">
           <li>
             <NavLink
-              to="/dashboard/"
+              to="/"
               className={({ isActive }) =>
                 `${
                   isActive ? "bg-teal-500 font-bold text-white" : ""
@@ -49,7 +64,7 @@ const Sidebar = () => {
           </li>
           <li>
             <NavLink
-              to={"/dashboard/profile"}
+              to={`/profile/${id}`}
               className={({ isActive }) =>
                 `${
                   isActive ? "bg-teal-500 font-bold text-white" : ""
@@ -62,7 +77,7 @@ const Sidebar = () => {
           </li>
           <li>
             <NavLink
-              to={"/dashboard/tickets/add"}
+              to={"/tickets/add"}
               className={({ isActive }) =>
                 `${
                   isActive ? "bg-teal-500 font-bold text-white" : ""
@@ -78,7 +93,7 @@ const Sidebar = () => {
             <>
               <li>
                 <NavLink
-                  to={"/dashboard/admin/tickets"}
+                  to={"/admin/tickets"}
                   className={({ isActive }) =>
                     `${
                       isActive ? "bg-teal-500 font-bold text-white" : ""
@@ -94,7 +109,7 @@ const Sidebar = () => {
 
               <li>
                 <NavLink
-                  to="/dashboard/admin/users"
+                  to="/admin/users"
                   className={({ isActive }) =>
                     `${
                       isActive ? "bg-teal-500 font-bold text-white" : ""
@@ -110,7 +125,7 @@ const Sidebar = () => {
 
           <li>
             <NavLink
-              to={"/dashboard/tickets"}
+              to={"/tickets"}
               className={({ isActive }) =>
                 `${
                   isActive ? "bg-teal-500 font-bold text-white" : ""

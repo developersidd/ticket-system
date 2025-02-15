@@ -1,9 +1,9 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
 import UserMiddleware from "./middleware/UserMiddleware";
-import NotFoundPage from "./pages/NotFoundPage";
 import DashboardPage from "./pages/Dashboard/DashboardPage";
+import LoginPage from "./pages/LoginPage";
+import NotFoundPage from "./pages/NotFoundPage";
+import RegisterPage from "./pages/RegisterPage";
 
 const App = () => {
   return (
@@ -11,7 +11,7 @@ const App = () => {
       <Routes>
         {/*  Private Route Starts */}
         <Route path="/*" element={<UserMiddleware />}>
-          <Route path="dashboard/*" element={<DashboardPage />} />
+          <Route path="*" element={<DashboardPage />} />
           {/*<Route path="products_details/:id" element={<ProductDetails />} />*/}
         </Route>
         {/*  Private Route Ends */}

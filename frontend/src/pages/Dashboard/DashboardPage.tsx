@@ -20,18 +20,22 @@ const Dashboard = () => {
       <Navbar />
       <div className="flex justify-between">
         <Sidebar />
-        <div className="w-[calc(100vw-256px)] translate-x-[256px] p-10 overflow-y-auto h-[calc(100vh-80px)]">
+        <div className="w-[calc(100vw-256px)] translate-x-[256px] p-3 md:p-6 lg:p-10 overflow-y-auto h-[calc(100vh-80px)]">
           <Routes>
             <Route path="/" element={<WelcomeDashboard />} />
-            <Route path="profile" element={<Profile />} />
+            <Route path="profile/:id" element={<Profile />} />
             <Route path="tickets" element={<MyTickets />} />
             <Route path="tickets/add" element={<AddTicketPage />} />
             <Route path="tickets/edit/:id" element={<EditTicketPage />} />
-            <Route path="/*" element={<AdminExecutiveMiddleware />}>
-              <Route path={`admin/users`} element={<AdminUsersPage />} />
-              <Route path={`admin/tickets`} element={<AdminTicketsPage />} />
-              <Route path="*" element={<NotFoundPage />} />
-            </Route>
+            {/* Admin Routes */}
+            {state?.role === "ADMIN" && (
+              <Route path="/*" element={<AdminExecutiveMiddleware />}>
+                <Route path={`admin/users`} element={<AdminUsersPage />} />
+                <Route path={`admin/tickets`} element={<AdminTicketsPage />} />
+                <Route path="*" element={<NotFoundPage />} />
+              </Route>
+            )}
+
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </div>

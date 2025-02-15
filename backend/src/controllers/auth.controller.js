@@ -4,23 +4,32 @@ import prisma from "../config/db.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import asyncHandler from "../utils/asyncHandler.js";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 const cookieOptions = {
   httpOnly: true,
   secure: true,
 };
 
 const registerUser = asyncHandler(async (req, res) => {
-  const { username, email, password, avatarUrl, role } = req.body || {};
+  const { username, email, password, role } = req.body || {};
   // check if all required fields are provided
-  if (
-    [username, email, password, avatarUrl].some((field) => field?.trim() === "")
-  ) {
+  if ([username, email, password].some((field) => field?.trim() === "")) {
     throw new ApiError(400, "Please provide all required fields");
   }
   // check email with regEx
   if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
     throw new ApiError(400, "Please provide a valid email address");
   }
+  const avatarLocalPath = req?.file?.path;
+
+  if (!avatarLocalPath) {
+    // throw new ApiError(400, "Avatar and Cover Image are required");
+    throw new ApiError(400, "Avatar is required");
+  }
+
+  // upload images on cloudinary
+  const avatar = await uploadOnCloudinary(avatarLocalPath);
+
   const hashedPassword = await bcrypt.hash(password, 10);
   const assignedRole = req?.user?.role === "ADMIN" ? role : "USER";
   // check if user already exists
@@ -37,7 +46,8 @@ const registerUser = asyncHandler(async (req, res) => {
   const user = await prisma.user.create({
     data: {
       username,
-      avatarUrl,
+      avatarUrl: avatar?.url,
+      avatarPublicId: avatar?.public_id,
       email,
       password: hashedPassword,
       role: assignedRole,

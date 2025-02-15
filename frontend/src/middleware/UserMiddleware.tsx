@@ -11,6 +11,7 @@ const UserMiddleware = () => {
   const [user, setUser] = React.useState<IUser | null>(null);
   useEffect(() => {
     const fetchUser = async () => {
+      if (!localStorage.getItem("loggedIn")) return;
       try {
         const response = await apiClient.get("/users/me");
         console.log("response:", response);
@@ -23,13 +24,14 @@ const UserMiddleware = () => {
         setIsLoading(false);
       }
     };
+
     fetchUser();
   }, [dispatch]);
   const location = useLocation();
   if (isLoading) {
     return (
       <div className="h-screen flex items-center justify-center">
-        <h1 className="text-6xl text-orange-500"> ...Loading </h1>
+        <img src="/assets/images/loader.svg" alt="loader" />
       </div>
     );
   }

@@ -7,6 +7,16 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { apiClient } from "../../api";
 import FormField from "./FormField";
+// import file type from cloudinary
+// import { File } from "zod";
+const ACCEPTED_FILE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+];
+
+const MAX_FILE_SIZE = 5000000; // 5MB
 
 const formSchema = z.object({
   username: z.string().min(3, {
@@ -18,9 +28,14 @@ const formSchema = z.object({
   password: z.string().min(6, {
     message: "Password must be at least 6 characters long",
   }),
-  avatarUrl: z.string().url({
-    message: "Please enter a valid URL",
-  }),
+  avatar: z
+    .any()
+    .refine((file) => file[0]?.name, "File is required")
+    .refine(
+      (files) => ACCEPTED_FILE_TYPES.includes(files[0]?.type),
+      "Only .png, .jpg, .jpeg formats are supported."
+    )
+    .refine((files) => files[0]?.size < MAX_FILE_SIZE, "Max size is 5MB."),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -35,9 +50,18 @@ const RegisterForm: React.FC = () => {
   });
   const navigate = useNavigate();
   const onSubmit = async (data: FormData) => {
+    console.log("data:", data);
     //const { email, password, username, avatarUrl } = data;
     try {
-      const res = await apiClient.post("/auth/register", data);
+      const formData = new FormData();
+      Object.entries(data).forEach(([key, value]) => {
+        if (key === "avatar") {
+          formData.append(key, value[0]);
+        } else {
+          formData.append(key, value);
+        }
+      });
+      const res = await apiClient.post("/auth/register", formData);
       console.log("res:", res);
       const user = res.data;
       navigate("/login");
@@ -86,14 +110,14 @@ const RegisterForm: React.FC = () => {
             className=" data-[error]:border-red-500 block w-full border border-gray-300 px-4 py-2 text-gray-600 text-sm rounded focus:ring-0 focus:border-teal-400 focus:outline-none placeholder-gray-500"
           />
         </FormField>
-        <FormField label={"Avatar URL"} error={errors?.avatarUrl}>
+
+        <FormField label={"Avatar"} error={errors?.avatar}>
           <input
-            {...register("avatarUrl")}
-            type="url"
-            id="avatarUrl"
-            name="avatarUrl"
-            placeholder="Enter your avatar URL"
-            data-error={errors?.avatarUrl}
+            {...register("avatar")}
+            type="file"
+            id="avatar"
+            name="avatar"
+            data-error={errors?.avatar}
             className=" data-[error]:border-red-500 block w-full border border-gray-300 px-4 py-2 text-gray-600 text-sm rounded focus:ring-0 focus:border-teal-400 focus:outline-none placeholder-gray-500"
           />
         </FormField>

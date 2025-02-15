@@ -32,17 +32,18 @@ const LoginForm: React.FC = () => {
   const onSubmit = async (data: FormData) => {
     const { email, password } = data;
     try {
-      const data = await apiClient.post("/auth/login", {
-        email,
-        password,
-      });
+      const { data } =
+        (await apiClient.post("/auth/login", {
+          email,
+          password,
+        })) || {};
       const user = data.data;
       console.log("user:", user);
       toast.success(
         `Welcome back - ${user?.role?.toUpperCase()}: ${user?.username}!`
       );
       localStorage.setItem("loggedIn", "true");
-      navigate("/dashboard/");
+      navigate("/");
     } catch (e: any) {
       console.log("e:", e);
       toast.error("There was an error occurred!");

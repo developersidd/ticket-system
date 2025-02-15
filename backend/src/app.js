@@ -6,13 +6,16 @@ import authRouter from "./routes/auth.route.js";
 import ticketRouter from "./routes/ticket.route.js";
 import userRouter from "./routes/user.route.js";
 import ApiError from "./utils/ApiError.js";
+
 const app = express();
 // Middlewares
+app.use(cookieParser());
+app.use(express.urlencoded({ limit: "20kb" }));
 app.use(express.json({ limit: "20kb" }));
 app.use(express.static("public"));
+
 app.use(cors({ credentials: true, origin: process.env.CORS_ORIGIN }));
-console.log("process.env.CORS_ORIGIN:", process.env.CORS_ORIGIN);
-app.use(cookieParser());
+
 
 // Routes
 app.get("/", (req, res) => {

@@ -1,4 +1,9 @@
-import { LOGGED_OUT, SET_USER, UserAction } from "../actions/user.acton";
+import {
+  LOGGED_OUT,
+  SET_USER,
+  UPDATE_USER,
+  UserAction,
+} from "../actions/user.acton";
 import { IUser } from "../context/user.context";
 
 export const initialState = null;
@@ -12,6 +17,11 @@ const userReducer = (state: IUser | null, action: UserAction): IUser | null => {
       };
     case LOGGED_OUT:
       return null;
+    case UPDATE_USER:
+      return {
+        ...state,
+        ...action.payload,
+      };
     default:
       throw new Error(`Unhandled action type`);
   }

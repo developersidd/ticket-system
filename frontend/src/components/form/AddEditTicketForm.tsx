@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { use, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
@@ -67,13 +67,13 @@ const AddEditTicketForm: React.FC = () => {
       if (isEditing) {
         await apiClient.patch(`/tickets/${id}`, data);
         toast.success("Ticket updated successfully!");
-        navigate("/dashboard/tickets");
+        navigate("/tickets");
         return;
       }
       await apiClient.post("/tickets/create", data);
       toast.success("Ticket created successfully!");
       reset();
-      navigate("/dashboard/tickets");
+      navigate("/tickets");
     } catch (e: any) {
       return toast.error("There was an error occurred!");
     }
@@ -109,7 +109,7 @@ const AddEditTicketForm: React.FC = () => {
         </FormField>
       </div>
 
-      {state?.role === "ADMIN" && (
+      {state?.role === "ADMIN" && isEditing && (
         <div className="mt-6 space-y-6">
           <FormField label={"Status"}>
             <select

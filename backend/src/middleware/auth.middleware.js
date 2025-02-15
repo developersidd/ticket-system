@@ -4,11 +4,9 @@ import ApiError from "../utils/ApiError.js";
 import asyncHandler from "../utils/asyncHandler.js";
 const verifyToken = asyncHandler(async (req, _, next) => {
   try {
-    console.log("req?.cookies:", req?.cookies);
     const token =
       req?.cookies?.token ||
       req.header("Authorization")?.replace("Bearer ", "");
-    console.log("token:", token);
     if (!token) {
       throw new ApiError(401, "Unauthorized access");
     }
@@ -42,6 +40,4 @@ const authorizeRoles = (...roles) => {
   };
 };
 
-
-
-export { verifyToken, authorizeRoles };
+export { authorizeRoles, verifyToken };

@@ -8,7 +8,7 @@ const AdminExecutiveMiddleware = () => {
   return state?.email && ["ADMIN", "EXECUTIVE"].includes(state.role) ? (
     <Outlet />
   ) : (
-    <Navigate to="/dashboard/" />
+    <Navigate to="/" />
   );
 };
 

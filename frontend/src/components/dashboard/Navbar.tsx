@@ -4,13 +4,13 @@ import useUserContext from "../../hooks/useUserContext";
 
 const Navbar = () => {
   const { state } = useUserContext() as IUserContext;
-  const { username, avatarUrl  } = state || {};
+  const { username, avatar_url, id } = state || {};
   return (
-    <nav className="flex items-center w-full h-[80px] bg-white border-b border-gray-200">
+    <nav className="flex items-center w-full h-[80px] bg-white border-b-2 border-gray-200">
       <div className="w-full px-3 py-3 lg:px-5 lg:pl-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center justify-start rtl:justify-end">
-            <Link to="/dashboard/" className="flex ms-2 md:me-24">
+            <Link to="/" className="flex ms-2 md:me-24">
               <img
                 src="/assets/images/logo.png"
                 className="size-17 "
@@ -24,10 +24,10 @@ const Navbar = () => {
           <div className="flex items-center">
             <div className="flex items-center ms-3">
               <div>
-                <Link to="/dashboard/profile">
+                <Link to={`/profile/${id}`}>
                   <img
-                    className="size-10 rounded-full"
-                    src={avatarUrl}
+                    className="size-12 rounded-full"
+                    src={avatar_url}
                     alt={username}
                   />
                 </Link>

@@ -14,7 +14,8 @@ model User {
   password  String
   role      Role     @default(USER)
   tickets   Ticket[] 
-  avatarUrl String    @default("https://avatar.iran.liara.run/public/boy?username=Ash")
+  avatar_url String    @default("https://avatar.iran.liara.run/public/boy?username=Ash")
+  avatar_public_id String  @default("")
   createdAt DateTime @default(now())
 }
 
@@ -23,7 +24,7 @@ model Ticket {
   title       String
   description String
   status      Status   @default(OPEN)
-  adminResponse String? 
+  admin_response String? 
   createdBy   User     @relation(fields: [userId], references: [id]) 
   userId      Int
   createdAt   DateTime @default(now())

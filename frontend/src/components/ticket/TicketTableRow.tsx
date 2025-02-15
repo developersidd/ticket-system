@@ -14,7 +14,7 @@ const TicketTableRow = ({ ticket }: { ticket: ITicket }) => {
     id,
     createdAt,
     adminResponse,
-    createdBy: { avatarUrl, email, username },
+    createdBy: { avatar_url, email, username },
   } = ticket || {};
   const [isDeleted, setIsDeleted] = useState(false);
   const { state } = useUserContext() as IUserContext;
@@ -39,7 +39,7 @@ const TicketTableRow = ({ ticket }: { ticket: ITicket }) => {
       <td className="p-4 border-b border-gray-200">
         <div className="flex items-center gap-3">
           <img
-            src={avatarUrl}
+            src={avatar_url}
             alt={username}
             className="inline-block relative object-cover object-center rounded-full w-9 h-9"
           />
@@ -87,7 +87,7 @@ const TicketTableRow = ({ ticket }: { ticket: ITicket }) => {
       </td>
       <td className="p-4 border-b border-gray-200">
         <div className="flex items-center gap-5">
-          <Link to={`/dashboard/tickets/edit/${id}`} className="" type="button">
+          <Link to={`/tickets/edit/${id}`} className="" type="button">
             <EditIcon className="text-yellow-500" />
           </Link>
           {state?.id === ticket.createdBy.id && (
